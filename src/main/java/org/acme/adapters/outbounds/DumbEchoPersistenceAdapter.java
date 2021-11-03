@@ -1,5 +1,6 @@
 package org.acme.adapters.outbounds;
 
+import io.smallrye.mutiny.Uni;
 import org.acme.core.domains.Echo;
 import org.acme.core.ports.EchoPersistencePort;
 
@@ -9,8 +10,8 @@ import javax.enterprise.context.ApplicationScoped;
 public class DumbEchoPersistenceAdapter implements EchoPersistencePort {
 
     @Override
-    public int save(Echo echo) {
-        return 0;
+    public Uni<Integer> save(Echo echo) {
+        return Uni.createFrom().item(0);
     }
 
 }

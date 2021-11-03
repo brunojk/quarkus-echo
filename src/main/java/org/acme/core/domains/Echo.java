@@ -2,9 +2,9 @@ package org.acme.core.domains;
 
 public class Echo {
 
-    private String uuid;
-    private String word;
-    private String tag;
+    private final String uuid;
+    private final String word;
+    private final String tag;
 
     public Echo(String uuid, String word, String tag) {
         this.uuid = uuid;
@@ -16,26 +16,11 @@ public class Echo {
         return word;
     }
 
-    public Echo setWord(String word) {
-        this.word = word;
-        return this;
-    }
-
     public String getTag() {
         return tag;
     }
 
-    public Echo setTag(String tag) {
-        this.tag = tag;
-        return this;
-    }
-
-    public String getUuid() {
+    public String getUUID() {
         return uuid;
-    }
-
-    public Echo setUuid(String uuid) {
-        this.uuid = uuid;
-        return this;
     }
 }

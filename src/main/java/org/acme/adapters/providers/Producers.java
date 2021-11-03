@@ -10,8 +10,13 @@ import javax.enterprise.context.ApplicationScoped;
 public class Producers {
 
     @ApplicationScoped
-    public EchoCore createEchoCore(EchoConfigurationPort echo_configuration_port, EchoPersistencePort echo_persistence_port) {
+    public EchoCore createEchoCore(
+        EchoConfigurationPort echo_configuration_port,
+        EchoPersistencePort echo_persistence_port
+    ) {
+
         return EchoCoreFactory.create(echo_configuration_port, echo_persistence_port);
+
     }
 
 }

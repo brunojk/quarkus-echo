@@ -1,7 +1,9 @@
 package org.acme.core.application;
 
+import io.smallrye.mutiny.Uni;
 import org.acme.core.application.definition.EchoCore;
 import org.acme.core.domains.Echo;
+import org.acme.core.exceptions.NoopException;
 import org.acme.core.helpers.UUIDGenerator;
 import org.acme.core.ports.EchoConfigurationPort;
 import org.acme.core.ports.EchoPersistencePort;
@@ -15,8 +17,7 @@ public class EchoCoreImpl implements EchoCore {
 
     private UUIDGenerator uuid_generator;
 
-    public EchoCoreImpl(EchoConfigurationPort config,
-                        EchoPersistencePort persistence) {
+    public EchoCoreImpl(EchoConfigurationPort config, EchoPersistencePort persistence) {
 
         this.config = config;
         this.persistence = persistence;
@@ -25,20 +26,27 @@ public class EchoCoreImpl implements EchoCore {
 
     }
 
+    @Override
     public void setUUIDGenerator(UUIDGenerator uuid_generator) {
         this.uuid_generator = uuid_generator;
     }
 
     @Override
-    public Echo echo(String word) {
+    public Uni<Echo> echo(String word) {
 
-        final String tag = Optional.ofNullable(config.getEchoTag()).orElse("quarkus");
+        return Uni.createFrom().item(() -> {
 
-        final Echo echo = new Echo(uuid_generator.string(), word, tag);
+                if( word.equals("noop") )
+                    throw new NoopException();
 
-        persistence.save(echo);
+                final String tag = Optional.ofNullable(config.getEchoTag()).orElse("quarkus");
 
-        return echo;
+                String uuid = uuid_generator.string();
+
+                return new Echo(uuid, word, tag);
+
+            })
+            .onItem().transformToUni(echo -> persistence.save(echo).map(result -> echo));
 
     }
 }

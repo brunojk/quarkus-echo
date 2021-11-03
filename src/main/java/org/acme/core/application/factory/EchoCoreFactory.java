@@ -7,8 +7,13 @@ import org.acme.core.ports.EchoPersistencePort;
 
 public class EchoCoreFactory {
 
-    public static EchoCore create(EchoConfigurationPort config, EchoPersistencePort persistence) {
+    public static EchoCore create(
+        EchoConfigurationPort config,
+        EchoPersistencePort persistence
+    ) {
+
         return new EchoCoreImpl(config, persistence);
+
     }
 
 }
